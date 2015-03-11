@@ -1,12 +1,16 @@
-package fragments
+package main
 
-import "strings"
+import (
+	frag "lentille/fragments"
+	"strings"
+)
 
 const joinChar = ":"
 
 // Command line prompt
 type Prompt struct {
-	fragments []Fragment
+	config    Config
+	fragments []frag.Fragment
 }
 
 func (p *Prompt) Render() string {
@@ -17,10 +21,11 @@ func (p *Prompt) Render() string {
 	return strings.Join(result, joinChar)
 }
 
-func (p *Prompt) Add(fragment Fragment) {
+func (p *Prompt) Add(fragment frag.Fragment) {
 	p.fragments = append(p.fragments, fragment)
 }
 
 func NewPrompt(configFileName string) *Prompt {
-    result := new Prompt{config: NewConfig(configFileName))}
+	result := Prompt{config: NewConfig(configFileName)}
+	return &result
 }

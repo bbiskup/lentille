@@ -16,9 +16,9 @@ var (
 func main() {
 	fmt.Println("lentille")
 
-	conf := NewConfig("configFileName")
+	//conf := NewConfig(*configFileName)
 
-	p := NewPrompt(configFileName)
+	p := NewPrompt(*configFileName)
 	p.Add(new(frag.DummyFragment))
 	p.Add(new(frag.DirInfoFragment))
 	fmt.Println(p.Render())
