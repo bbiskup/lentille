@@ -20,3 +20,7 @@ func (p *Prompt) Render() string {
 func (p *Prompt) Add(fragment Fragment) {
 	p.fragments = append(p.fragments, fragment)
 }
+
+func NewPrompt(configFileName string) *Prompt {
+    result := new Prompt{config: NewConfig(configFileName))}
+}
