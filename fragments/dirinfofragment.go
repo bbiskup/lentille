@@ -6,8 +6,10 @@ import (
 	"os"
 )
 
+// A simple fragment representing information about the current directory
+
 type DirInfoFragment struct {
-	BaseFragment
+	baseFragment
 }
 
 func (f *DirInfoFragment) Render() string {

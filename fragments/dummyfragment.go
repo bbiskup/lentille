@@ -1,7 +1,7 @@
 package fragments
 
 type DummyFragment struct {
-	BaseFragment
+	baseFragment
 }
 
 func (f *DummyFragment) Render() string {

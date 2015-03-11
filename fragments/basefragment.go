@@ -1,9 +1,11 @@
 package fragments
 
-type BaseFragment struct {
+// Base for all fragments
+
+type baseFragment struct {
 	subFragments []Fragment
 }
 
-func (b *BaseFragment) SubFragments() []Fragment {
+func (b *baseFragment) SubFragments() []Fragment {
 	return b.subFragments
 }

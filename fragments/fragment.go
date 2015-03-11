@@ -1,6 +1,6 @@
 package fragments
 
-// Part of command line promp
+// Part of command line prompt
 type Fragment interface {
 	// Creates string for rendering prompt
 	Render() string
