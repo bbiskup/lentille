@@ -32,13 +32,13 @@ const (
 )
 
 // parses a prompt specification into a list of fragments
-func (p *PromptParser) parse(promptSpec string) []frag.Fragment {
+func (p *PromptParser) Parse() []frag.Fragment {
 	var result []frag.Fragment
 	cmdState := STATE_LITERAL
 	escape := true
 	var currentCmd string
 	var currentLiteral string
-	for c := range promptSpec {
+	for c := range p.PromptSpec {
 		if c == ESCAPE_CHAR {
 			escape = true
 			continue
