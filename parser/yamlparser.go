@@ -6,7 +6,7 @@ import (
 	"github.com/kylelemons/go-gypsy/yaml"
 	"lentille/fragments"
 	"log"
-	//"strings"
+	"strings"
 )
 
 const (
@@ -65,11 +65,7 @@ func Parse(configFileName string) (result []fragments.Fragment, err error) {
 		name, name_err := fragmentConf.Get("name")
 		if name_err != nil {
 			log.Fatalf("Missing mandatory parameter 'name'", name_err)
-		}
-
-		commandParts := strings.Split(name, COMMAND_SEP)
-		fragmentConf.Root["mainCommand"] = commandParts[0]
-		fragmentConf.Root["subCommand"] = commandParts[1:]*/
+		}*/
 
 		confDict, err := BuildConfDict(&item)
 		if err != nil {
@@ -80,6 +76,10 @@ func Parse(configFileName string) (result []fragments.Fragment, err error) {
 		if !ok {
 			return nil, errors.New("Missing name")
 		}
+
+		commandParts := strings.Split(name, COMMAND_SEP)
+		confDict["mainCommand"] = commandParts[0]
+		confDict["subCommand"] = strings.Join(commandParts[1:], COMMAND_SEP)
 
 		var fragment fragments.Fragment
 
