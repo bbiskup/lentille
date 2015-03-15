@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/kylelemons/go-gypsy/yaml"
+	"lentille/fragments"
 	"log"
 	"reflect"
 )
 
-type PromptDictList []yaml.Map
-
+// get list of fragment configurations
 func GetChildList(config *yaml.File) (childList yaml.List, err error) {
 	child, err := yaml.Child(config.Root, "fragments")
 	if err != nil {
@@ -26,7 +26,7 @@ func GetChildList(config *yaml.File) (childList yaml.List, err error) {
 	return childList, nil
 }
 
-func Parse(configFileName string) (result PromptDictList, err error) {
+func Parse(configFileName string) (result []fragments.Fragment, err error) {
 	config, err := yaml.ReadFile(configFileName)
 	if err != nil {
 		log.Printf("Error reading YAML file %s: %s", configFileName, err)
@@ -41,17 +41,30 @@ func Parse(configFileName string) (result PromptDictList, err error) {
 
 	for _, item := range childList {
 		item := item.(yaml.Map)
-		fmt.Println("item", item, reflect.TypeOf(item), item["name"])
-		//result[item["name"]] = item
 
-		dummy := yaml.File{Root: item}
-		num, err := dummy.GetInt("num")
+		// name, err := item["name"]
+		// fmt.Println("item", item, reflect.TypeOf(item), item["name"])
 
-		if err != nil {
+		fragmentConf := yaml.File{Root: item}
+		name, name_err := fragmentConf.Get("name")
+		if name_err != nil {
+			log.Fatalf("Missing mandatory parameter 'name'", name_err)
+		}
+
+		var fragment fragments.Fragment
+
+		if name == "literal" {
+			fragment = fragments.NewLiteralFragment(&fragmentConf)
+		}
+
+		if fragment != nil {
+			result = append(result, fragment)
+		}
+		/*if err != nil {
 			log.Printf("Could not get num : %s", err)
 		} else {
 			fmt.Println("##", num)
-		}
+		}*/
 	}
 
 	return

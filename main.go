@@ -21,5 +21,5 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Printf("parsed: %s", parsed)
+	fmt.Printf("parsed: %#v\n", parsed)
 }
