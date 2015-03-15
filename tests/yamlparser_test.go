@@ -7,6 +7,7 @@ import (
 )
 
 func TestParse1(t *testing.T) {
+	parser := parser.YAMLParser{}
 	p, err := parser.Parse("../testdata/file1.yaml")
 	if err != nil {
 		t.Errorf("Parse failed: %s", err)
