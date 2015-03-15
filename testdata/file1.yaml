@@ -1,6 +1,7 @@
 fragments:
     - name: literal
       text: ++
+      color: cyan
 
     - name: git.branch
 

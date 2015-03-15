@@ -12,7 +12,15 @@ type LiteralFragment struct {
 }
 
 func (f *LiteralFragment) Render() string {
-	return Bold(Colorize(f.Text, MAGENTA)) + Colorize("nix", BLUE)
+	result := f.Text
+
+	log.Printf("conf: %#v", f.conf)
+	color, hasColor := f.conf["color"]
+	if hasColor {
+		log.Printf("has color " + color)
+		result = Colorize(result, colorMap[color])
+	}
+	return result
 }
 
 func (f *LiteralFragment) IsActive() bool {
@@ -26,6 +34,7 @@ func NewLiteralFragment(conf ConfDict) Fragment {
 	}
 
 	return &LiteralFragment{
-		Text: string(text),
+		baseFragment: baseFragment{conf: conf},
+		Text:         string(text),
 	}
 }

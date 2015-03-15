@@ -2,6 +2,7 @@ package fragments
 
 import (
 	"fmt"
+	"log"
 )
 
 type FontAppearance int
@@ -28,10 +29,25 @@ const (
 	WHITE
 )
 
+var colorMap map[string]Color = map[string]Color{
+	"black":   BLACK,
+	"red":     RED,
+	"green":   GREEN,
+	"yellow":  YELLOW,
+	"blue":    BLUE,
+	"magenta": MAGENTA,
+	"cyan":    CYAN,
+	"white":   WHITE,
+}
+
 func Bold(msg string) string {
 	return fmt.Sprintf("\033[9m%s\033[0m", msg)
 }
 
 func Colorize(msg string, color Color) string {
+	log.Printf("Colorizing: %#v", color)
+	if color == 0 {
+		log.Fatal("Not a valid color")
+	}
 	return fmt.Sprintf("\033[%dm%s\033[0m", color, msg)
 }
