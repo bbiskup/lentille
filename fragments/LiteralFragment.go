@@ -13,7 +13,7 @@ type LiteralFragment struct {
 }
 
 func (f *LiteralFragment) Render() string {
-	return "dummy"
+	return f.Text
 }
 
 func (f *LiteralFragment) IsActive() bool {

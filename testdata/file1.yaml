@@ -1,6 +1,6 @@
 fragments:
     - name: literal
-      text: "++"
+      text: ++
 
     - name: git.branch
 
@@ -9,3 +9,6 @@ fragments:
 
     - name: shell.userprompt
       num: 123
+
+    - name: literal
+      text: $ 
