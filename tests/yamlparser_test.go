@@ -11,8 +11,10 @@ func TestParse1(t *testing.T) {
 	if err != nil {
 		t.Errorf("Parse failed: %s", err)
 	}
-	if len(p) != 4 {
+
+	fmt.Printf("p: %#v", p)
+
+	if len(p) != 5 {
 		t.Errorf("Length of parsed data incorrect")
 	}
-	fmt.Printf("p: %s", p)
 }

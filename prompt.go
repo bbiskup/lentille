@@ -26,6 +26,7 @@ func (p *Prompt) Add(fragment frag.Fragment) {
 }
 
 func NewPrompt(configFileName string) (prompt *Prompt, err error) {
+	parser := parser.YAMLParser{}
 	parsed, err := parser.Parse(configFileName)
 	if err != nil {
 		return nil, err

@@ -13,8 +13,11 @@ const (
 	COMMAND_SEP = "."
 )
 
+type YAMLParser struct {
+}
+
 // get list of fragment configurations
-func GetChildList(config *yaml.File) (childList yaml.List, err error) {
+func (p *YAMLParser) getChildList(config *yaml.File) (childList yaml.List, err error) {
 	child, err := yaml.Child(config.Root, "fragments")
 	if err != nil {
 		fmt.Print("Child error:", err)
@@ -29,7 +32,7 @@ func GetChildList(config *yaml.File) (childList yaml.List, err error) {
 	return childList, nil
 }
 
-func BuildConfDict(confSection *yaml.Map) (result fragments.ConfDict, err error) {
+func (p *YAMLParser) buildConfDict(confSection *yaml.Map) (result fragments.ConfDict, err error) {
 	result = make(fragments.ConfDict)
 	for key, value := range *confSection {
 		valueStr, ok := value.(yaml.Scalar)
@@ -41,14 +44,21 @@ func BuildConfDict(confSection *yaml.Map) (result fragments.ConfDict, err error)
 	return result, nil
 }
 
-func Parse(configFileName string) (result []fragments.Fragment, err error) {
+func (p *YAMLParser) parseCommand(name string) (mainCommand string, subCommand string) {
+	commandParts := strings.Split(name, COMMAND_SEP)
+	mainCommand = commandParts[0]
+	subCommand = strings.Join(commandParts[1:], COMMAND_SEP)
+	return
+}
+
+func (p *YAMLParser) Parse(configFileName string) (result []fragments.Fragment, err error) {
 	config, err := yaml.ReadFile(configFileName)
 	if err != nil {
 		log.Printf("Error reading YAML file %s: %s", configFileName, err)
 		return nil, err
 	}
 
-	childList, err := GetChildList(config)
+	childList, err := p.getChildList(config)
 
 	if err != nil {
 		log.Printf("Could not get child list: %s", err)
@@ -58,16 +68,7 @@ func Parse(configFileName string) (result []fragments.Fragment, err error) {
 	for _, item := range childList {
 		item := item.(yaml.Map)
 
-		// name, err := item["name"]
-		// fmt.Println("item", item, reflect.TypeOf(item), item["name"])
-
-		/*fragmentConf := yaml.File{Root: item}
-		name, name_err := fragmentConf.Get("name")
-		if name_err != nil {
-			log.Fatalf("Missing mandatory parameter 'name'", name_err)
-		}*/
-
-		confDict, err := BuildConfDict(&item)
+		confDict, err := p.buildConfDict(&item)
 		if err != nil {
 			return nil, err
 		}
@@ -77,9 +78,7 @@ func Parse(configFileName string) (result []fragments.Fragment, err error) {
 			return nil, errors.New("Missing name")
 		}
 
-		commandParts := strings.Split(name, COMMAND_SEP)
-		confDict["mainCommand"] = commandParts[0]
-		confDict["subCommand"] = strings.Join(commandParts[1:], COMMAND_SEP)
+		confDict["mainCommand"], confDict["subCommand"] = p.parseCommand(name)
 
 		var fragment fragments.Fragment
 
@@ -90,11 +89,6 @@ func Parse(configFileName string) (result []fragments.Fragment, err error) {
 		if fragment != nil {
 			result = append(result, fragment)
 		}
-		/*if err != nil {
-			log.Printf("Could not get num : %s", err)
-		} else {
-			fmt.Println("##", num)
-		}*/
 	}
 
 	return
