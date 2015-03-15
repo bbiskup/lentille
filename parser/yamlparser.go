@@ -8,9 +8,7 @@ import (
 	"reflect"
 )
 
-type PromptDict map[string]interface{}
-
-type PromptDictList []PromptDict
+type PromptDictList []yaml.Map
 
 func GetChildList(config *yaml.File) (childList yaml.List, err error) {
 	child, err := yaml.Child(config.Root, "fragments")
@@ -43,8 +41,18 @@ func Parse(configFileName string) (result PromptDictList, err error) {
 
 	for _, item := range childList {
 		item := item.(yaml.Map)
-		fmt.Println("item", item)
+		fmt.Println("item", item, reflect.TypeOf(item), item["name"])
 		//result[item["name"]] = item
+
+		dummy := yaml.File{Root: item}
+		num, err := dummy.GetInt("num")
+
+		if err != nil {
+			log.Printf("Could not get num : %s", err)
+		} else {
+			fmt.Println("##", num)
+		}
 	}
+
 	return
 }

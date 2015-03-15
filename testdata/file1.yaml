@@ -8,3 +8,4 @@ fragments:
       cmd: date
 
     - name: shell.userprompt
+      num: 123
