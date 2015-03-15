@@ -6,7 +6,6 @@ import (
 	"github.com/kylelemons/go-gypsy/yaml"
 	"lentille/fragments"
 	"log"
-	"reflect"
 )
 
 // get list of fragment configurations
@@ -16,7 +15,6 @@ func GetChildList(config *yaml.File) (childList yaml.List, err error) {
 		fmt.Print("Child error:", err)
 		return nil, err
 	}
-	fmt.Println("child", child, reflect.TypeOf(child))
 
 	childList, childCastOK := child.(yaml.List)
 	if !childCastOK {
@@ -37,6 +35,7 @@ func Parse(configFileName string) (result []fragments.Fragment, err error) {
 
 	if err != nil {
 		log.Printf("Could not get child list: %s", err)
+		return nil, err
 	}
 
 	for _, item := range childList {

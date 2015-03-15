@@ -2,6 +2,7 @@ package main
 
 import (
 	frag "lentille/fragments"
+	"lentille/parser"
 	"strings"
 )
 
@@ -9,7 +10,6 @@ const joinChar = ":"
 
 // Command line prompt
 type Prompt struct {
-	config    Config
 	fragments []frag.Fragment
 }
 
@@ -25,7 +25,13 @@ func (p *Prompt) Add(fragment frag.Fragment) {
 	p.fragments = append(p.fragments, fragment)
 }
 
-func NewPrompt(configFileName string) *Prompt {
-	result := Prompt{config: NewConfig(configFileName)}
-	return &result
+func NewPrompt(configFileName string) (prompt *Prompt, err error) {
+	parsed, err := parser.Parse(configFileName)
+	if err != nil {
+		return nil, err
+	}
+	result := Prompt{
+		fragments: parsed,
+	}
+	return &result, nil
 }
