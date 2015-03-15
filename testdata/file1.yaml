@@ -1,0 +1,10 @@
+fragments:
+    - name: literal
+      text: "++"
+
+    - name: git.branch
+
+    - name: shell.exec
+      cmd: date
+
+    - name: shell.userprompt

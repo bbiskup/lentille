@@ -11,3 +11,7 @@ func (f *DummyFragment) Render() string {
 func (f *DummyFragment) IsActive() bool {
 	return true
 }
+
+func NewDummyFragment(args *FragmentArgs) *DummyFragment {
+	return &DummyFragment{baseFragment{args: args}}
+}
