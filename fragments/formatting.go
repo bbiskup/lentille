@@ -4,11 +4,13 @@ import (
 	"fmt"
 )
 
-type FontWeight int
+type FontAppearance int
 
 const (
-	NORMAL FontWeight = iota
-	BOLD
+	NORMAL      FontAppearance = 0
+	BOLD        FontAppearance = 1
+	NEGATIVE    FontAppearance = 7
+	CROSSED_OUT FontAppearance = 9
 )
 
 type Color int
@@ -27,7 +29,7 @@ const (
 )
 
 func Bold(msg string) string {
-	return fmt.Sprintf("\033[1m%s\033[0m", msg)
+	return fmt.Sprintf("\033[9m%s\033[0m", msg)
 }
 
 func Colorize(msg string, color Color) string {

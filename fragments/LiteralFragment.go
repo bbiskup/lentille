@@ -12,7 +12,7 @@ type LiteralFragment struct {
 }
 
 func (f *LiteralFragment) Render() string {
-	return Colorize(f.Text, MAGENTA)
+	return Bold(Colorize(f.Text, MAGENTA)) + Colorize("nix", BLUE)
 }
 
 func (f *LiteralFragment) IsActive() bool {
