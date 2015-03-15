@@ -1,7 +1,6 @@
 package fragments
 
 import (
-	"github.com/kylelemons/go-gypsy/yaml"
 	"log"
 	"strconv"
 )
@@ -9,7 +8,7 @@ import (
 // Base for all fragments
 
 type baseFragment struct {
-	args         *yaml.File
+	conf         ConfDict
 	subFragments []Fragment
 	isActive     bool
 }
@@ -22,11 +21,11 @@ func (b *baseFragment) IsActive() bool {
 	return b.isActive
 }
 
-func newBaseFragment(args *yaml.File) *baseFragment {
-	isActiveStr := GetOptionalParam(args, "active", "false")
+func newBaseFragment(conf ConfDict) *baseFragment {
+	isActiveStr := GetOptionalParam(conf, "active", "false")
 	isActive, err := strconv.ParseBool(isActiveStr)
 	if err != nil {
 		log.Fatalf("incorrect bool")
 	}
-	return &baseFragment{args: args, isActive: isActive}
+	return &baseFragment{conf: conf, isActive: isActive}
 }

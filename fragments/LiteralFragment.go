@@ -1,7 +1,6 @@
 package fragments
 
 import (
-	"github.com/kylelemons/go-gypsy/yaml"
 	"log"
 )
 
@@ -20,14 +19,13 @@ func (f *LiteralFragment) IsActive() bool {
 	return true
 }
 
-func NewLiteralFragment(args *yaml.File) Fragment {
-	text, err := args.Get("text")
-	if err != nil {
+func NewLiteralFragment(conf ConfDict) Fragment {
+	text, ok := conf["text"]
+	if !ok {
 		log.Fatalf("Missing mandatory parameter '%s'", text)
 	}
 
 	return &LiteralFragment{
-		baseFragment: baseFragment{args: args},
-		Text:         string(text),
+		Text: string(text),
 	}
 }

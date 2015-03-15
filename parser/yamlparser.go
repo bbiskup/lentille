@@ -6,6 +6,11 @@ import (
 	"github.com/kylelemons/go-gypsy/yaml"
 	"lentille/fragments"
 	"log"
+	//"strings"
+)
+
+const (
+	COMMAND_SEP = "."
 )
 
 // get list of fragment configurations
@@ -22,6 +27,18 @@ func GetChildList(config *yaml.File) (childList yaml.List, err error) {
 		return nil, errors.New("Cast failed")
 	}
 	return childList, nil
+}
+
+func BuildConfDict(confSection *yaml.Map) (result fragments.ConfDict, err error) {
+	result = make(fragments.ConfDict)
+	for key, value := range *confSection {
+		valueStr, ok := value.(yaml.Scalar)
+		if !ok {
+			return nil, errors.New("Expected scalar")
+		}
+		result[key] = valueStr.String()
+	}
+	return result, nil
 }
 
 func Parse(configFileName string) (result []fragments.Fragment, err error) {
@@ -44,16 +61,30 @@ func Parse(configFileName string) (result []fragments.Fragment, err error) {
 		// name, err := item["name"]
 		// fmt.Println("item", item, reflect.TypeOf(item), item["name"])
 
-		fragmentConf := yaml.File{Root: item}
+		/*fragmentConf := yaml.File{Root: item}
 		name, name_err := fragmentConf.Get("name")
 		if name_err != nil {
 			log.Fatalf("Missing mandatory parameter 'name'", name_err)
 		}
 
+		commandParts := strings.Split(name, COMMAND_SEP)
+		fragmentConf.Root["mainCommand"] = commandParts[0]
+		fragmentConf.Root["subCommand"] = commandParts[1:]*/
+
+		confDict, err := BuildConfDict(&item)
+		if err != nil {
+			return nil, err
+		}
+
+		name, ok := confDict["name"]
+		if !ok {
+			return nil, errors.New("Missing name")
+		}
+
 		var fragment fragments.Fragment
 
 		if name == "literal" {
-			fragment = fragments.NewLiteralFragment(&fragmentConf)
+			fragment = fragments.NewLiteralFragment(confDict)
 		}
 
 		if fragment != nil {
