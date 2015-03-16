@@ -23,10 +23,6 @@ func (f *LiteralFragment) Render() string {
 	return result
 }
 
-func (f *LiteralFragment) IsActive() bool {
-	return true
-}
-
 func NewLiteralFragment(conf ConfDict) Fragment {
 	text, ok := conf["text"]
 	if !ok {

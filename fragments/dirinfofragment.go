@@ -20,7 +20,3 @@ func (f *DirInfoFragment) Render() string {
 		return result
 	}
 }
-
-func (f *DirInfoFragment) IsActive() bool {
-	return true
-}
