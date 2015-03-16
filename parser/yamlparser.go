@@ -78,6 +78,12 @@ func (p *YAMLParser) Parse(configFileName string) (result []fragments.Fragment, 
 			return nil, errors.New("Missing name")
 		}
 
+		isActive := confDict.GetOptionalParamBool("active", "true")
+		if !isActive {
+			log.Printf("Skipping inactive fragment '%s'", name)
+			continue
+		}
+
 		confDict["mainCommand"], confDict["subCommand"] = p.parseCommand(name)
 
 		var fragment fragments.Fragment
